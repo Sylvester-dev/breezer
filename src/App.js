@@ -9,6 +9,7 @@ import { Query } from 'react-apollo'
 
 import { GET_ERRORS } from './graphql/queries'
 
+import TestDb from './routes/TestDb'
 import TestRegistrar from './routes/TestRegistrar'
 import Home from './routes/Home'
 import SearchResults from './routes/SearchResults'
@@ -102,6 +103,7 @@ const App = ({ initialClient, initialNetworkId }) => {
                     />
                     <Route path="/address/:address" component={Address} />
                     <Route path="/renew" component={Renew} />
+                    <Route path="/test" component={TestDb} />
                     <Route path="*" component={Error404} />
                   </Switch>
                 </Router>
