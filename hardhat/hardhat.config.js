@@ -24,10 +24,14 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    iotex: {
+      url: "https://babel-api.testnet.iotex.io",
+      accounts: [
+        "009bf2ef3f42055f981f34495986de463cede4fdc0e925d5ca2afc001aacd20f",
+      ],
+      chainId: 4690,
+      gas: 8500000,
+      gasPrice: 1000000000000,
     },
   },
   gasReporter: {

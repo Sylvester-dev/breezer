@@ -16,8 +16,6 @@ contract Market {
         
     }
     
-    
-    
     AuctionItem[] public itemsForSale; 
     mapping (address => mapping (uint256 => bool)) activeItems;
     
