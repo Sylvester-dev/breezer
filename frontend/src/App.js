@@ -300,6 +300,13 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+      {/* {!this.state.metamaskConnected ? (
+          <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
+        ) : !this.state.contractDetected ? (
+          <ContractNotDeployed />
+        ) : this.state.loading ? (
+          <Loading />
+        ) : ( */}
           <>
             <HashRouter basename="/">
               <Navbar />
@@ -358,6 +365,7 @@ class App extends Component {
               />
             </HashRouter>
           </>
+          {/* )} */}
       </div>
     );
   }
