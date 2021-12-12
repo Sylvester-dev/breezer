@@ -1,12 +1,12 @@
 import React from "react";
-import icon from "./favicon-32x32.png";
+import * as icon from "./favicon.gif";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <div className="container">
-        <img src={icon} alt="" />
+        <img src={icon} alt="" style={{width:"5%", height:"5%"}} />
         <Link to="/" className="navbar-brand ml-2">
           NFT's
         </Link>
