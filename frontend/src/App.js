@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import "./App.css";
 import Web3 from "web3";
+import Data from "./data_json.json";
 
 import CropNFT from "./abis/CropNFT.json";
+import Market from "./abis/Market.json";
 
 import FormAndPreview from "./FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -14,21 +16,29 @@ import Loading from "./Loading/Loading";
 import Navbar from "./Navbar/Navbar";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import Queries from "./Queries/Queries";
+import axios from "axios";
 
-const ipfsClient = require("ipfs-http-client");
+
+function getRandomValue() {
+  const rand = Math.floor((Math.random() * 10) % 7);
+  return rand;
+}
+
+/* const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https",
 });
-
+ */
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       accountAddress: "",
       accountBalance: "",
-      CropNFTContract: null,
+      cropNFTContract: null,
+      marketContract:null,
       cryptoBoysCount: 0,
       cryptoBoys: [],
       loading: true,
@@ -71,7 +81,7 @@ class App extends Component {
       const diff = countDownTime - now;
       if (diff < 0) {
         mintBtn.removeAttribute("disabled");
-        mintBtn.innerHTML = "Mint My Crypto Boy";
+        mintBtn.innerHTML = "Mint My Article";
         localStorage.removeItem(this.state.accountAddress);
         clearInterval(interval);
       } else {
@@ -115,6 +125,11 @@ class App extends Component {
           CropNFT.abi,
           "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364"
         );
+        console.log(cropNFTContract)
+        const marketContract = new web3.eth.Contract(
+          Market.abi,
+          ""
+        )
         this.setState({ cropNFTContract });
         this.setState({ contractDetected: true });
         
@@ -156,22 +171,71 @@ class App extends Component {
   mintMyNFT = async (name, tokenPrice) => {
     this.setState({ loading: true });
     
+    
+      let ImageList = [
+        "QmanhUetUNsJbQxA6M4Co1eydY91Vu6PZvoJifrgNJ5FzH",
+        "QmS4hHWsVyQGaSb1VrfyFCE5qCXBBVFRYkuLhNzxEPrqEm",
+        "QmP6amwSued8zTnHiQL8eiTE2QaYv8E8ZT3yNqe8wZ6uiw",
+        "QmZkBnKdiGfun8bR3P7cobnQK7JZCtKk7HaYYhr3xp8KPu",
+        "QmUi3W1VTYJtMsjDy26BJ1HasBYknQB76jcDGCP9k5C9ca",
+        "QmUgzufRg2rHWa9CMqqVxXhKqqB6ZLBj16Hvjw1uUhWMcM",
+        "QmSoLhBB9mZUbNRuozNTrTq6uQGTfmmAAjWuWwfDF2ZKZA",
+        "Qmdqv21AhdTnnzpjbBoQbP1agLtbawky82uUr2qieeLn3K",
+      ];
+
       
-      let previousTokenId;
-      previousTokenId = await this.state.cryptoBoysContract.methods
-        .cryptoBoyCounter()
-        .call();
-      previousTokenId = previousTokenId.toNumber();
-      const tokenId = previousTokenId + 1;
       const tokenObject = {
+        AssetName: name,
+        Image: ImageList[getRandomValue()],
+        Lat:Data[getRandomValue()].latitude,
+        Long:Data[getRandomValue()].longitude,
+        temperature:Data[getRandomValue()].temperature,
+        pressure:Data[getRandomValue()].pressure,
+        humidity:Data[getRandomValue()].humidity,
+        light:Data[getRandomValue()].light,
+        rating:"4",
+        Price:tokenPrice
+
+      };
+
+      console.log(ImageList[getRandomValue()]);
+      const pinataApiKey = "a770d310d147135d5ec4";
+      const pinataSecretApiKey =
+        "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
+      const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+
+      const json_upload = await axios
+        .post(jsonUrl, tokenObject, {
+          maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
+          headers: {
+            "Content-Type": "application/json",
+            pinata_api_key: pinataApiKey,
+            pinata_secret_api_key: pinataSecretApiKey,
+          },
+        })
+        console.log(json_upload)
+
+
+      // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
+      
+      let haha = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
+
+      console.log(haha.events.Transfer.returnValues.tokenId);
+      
+      this.setState({ loading: false });
+
+      
+     /*  const tokenObject = {
         tokenName: "Crypto Boy",
         tokenSymbol: "CB",
         tokenId: `${tokenId}`,
         name: name,
       };
+
       const cid = await ipfs.add(JSON.stringify(tokenObject));
       let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
       const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
+      
       this.state.cryptoBoysContract.methods
         .mintCryptoBoy(name, tokenURI, price)
         .send({ from: this.state.accountAddress })
@@ -179,7 +243,7 @@ class App extends Component {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
           window.location.reload();
-        });
+        }); */
     
   };
 
