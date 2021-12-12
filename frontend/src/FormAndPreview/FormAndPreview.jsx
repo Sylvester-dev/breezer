@@ -4,7 +4,6 @@ import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
 
 
 
-// source: https://stackoverflow.com/questions/1484506/random-color-generator
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
@@ -51,42 +50,31 @@ class FormAndPreview extends Component {
   render() {
     return (
       <div>
-      <h1>Latitude {Data[getRandomValue()].latitude}</h1>
-      <h1>Longitude {Data[getRandomValue()].longitude}</h1>
-      <h1>Temperature {Data[getRandomValue()].temperature}</h1>
-      <h1>Pressure {Data[getRandomValue()].pressure}</h1>
-      <h1>Humidity {Data[getRandomValue()].humidity}</h1>
-      <h1>Light {Data[getRandomValue()].light}</h1>
+        <h1>Latitude {Data[getRandomValue()].latitude}</h1>
+        <h1>Longitude {Data[getRandomValue()].longitude}</h1>
+        <h1>Temperature {Data[getRandomValue()].temperature}</h1>
+        <h1>Pressure {Data[getRandomValue()].pressure}</h1>
+        <h1>Humidity {Data[getRandomValue()].humidity}</h1>
+        <h1>Light {Data[getRandomValue()].light}</h1>
         <div className="card mt-1">
           <div className="card-body align-items-center d-flex justify-content-center">
-            <h5>Mint Your Farm Article With True Rating Using IOT based True Ratings</h5>
+            <h5>
+              Mint Your Farm Article With True Rating Using IOT based True
+              Ratings
+            </h5>
           </div>
         </div>
         <form onSubmit={this.callMintMyNFTFromApp} className="pt-4 mt-1">
           <div className="row">
-            <div className="col-md-3">
-              
-              
-              
-              
-            </div>
-            <div className="col-md-3">
-              
-              
-            </div>
+            <div className="col-md-3"></div>
+            <div className="col-md-3"></div>
             <div className="col-md-6 d-flex justify-content-center align-items-center">
               {/* Select image component */}
-              
             </div>
           </div>
           <div className="row">
-            <div className="col-md-3">
-              
-              
-            </div>
-            <div className="col-md-3">
-              
-            </div>
+            <div className="col-md-3"></div>
+            <div className="col-md-3"></div>
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="cryptoBoyName">Name</label>
