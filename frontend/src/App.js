@@ -125,12 +125,15 @@ class App extends Component {
           CropNFT.abi,
           "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364"
         );
-        console.log(cropNFTContract)
+        this.setState({ cropNFTContract });
         const marketContract = new web3.eth.Contract(
           Market.abi,
-          ""
-        )
-        this.setState({ cropNFTContract });
+          "0x3160a2cf5A2649fe372262D775848d1bB75FC56F"
+        );
+        
+        this.setState({ marketContract });
+
+        console.log(marketContract)
         this.setState({ contractDetected: true });
         
 /*         this.setState({ cryptoBoysCount }); 
@@ -218,11 +221,36 @@ class App extends Component {
 
       // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
       
-      let haha = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
+      let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
 
-      console.log(haha.events.Transfer.returnValues.tokenId);
+      console.log(createCrop.events.Transfer.returnValues.tokenId);
+
       
-      this.setState({ loading: false });
+      const approvedAddress = await this.state.cropNFTContract.methods
+        .getApproved(createCrop.events.Transfer.returnValues.tokenId)
+        .call();
+
+      if (approvedAddress != "0x3160a2cf5A2649fe372262D775848d1bB75FC56F") {
+        await this.state.cropNFTContract.methods
+          .approve(
+            "0x3160a2cf5a2649fe372262d775848d1bb75fc56f",
+            createCrop.events.Transfer.returnValues.tokenId
+          )
+          .send({ from: this.state.accountAddress });
+      }
+      let market = await this.state.marketContract.methods
+        .addItemToMarket(
+          createCrop.events.Transfer.returnValues.tokenId,
+          "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364",
+          tokenPrice
+        )
+        .send({ from: this.state.accountAddress });
+
+
+        console.log(market)
+
+
+      
 
       
      /*  const tokenObject = {
