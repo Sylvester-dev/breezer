@@ -3,14 +3,13 @@ import { getFirestore } from "@firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBM9uKKMpcDkxRxZTyXBSsrvOeCWKypmqQ",
-  authDomain: "cns-domain.firebaseapp.com",
-  databaseURL: "https://cns-domain-default-rtdb.firebaseio.com",
-  projectId: "cns-domain",
-  storageBucket: "cns-domain.appspot.com",
-  messagingSenderId: "10089615313",
-  appId: "1:10089615313:web:21a076cde26155d94a1af0",
-  measurementId: "${config.measurementId}"
+  apiKey: "AIzaSyCESHxbty0WU1JLcxpVsvQbJsPNBPeoTxk",
+  authDomain: "iotex-36fc9.firebaseapp.com",
+  projectId: "iotex-36fc9",
+  storageBucket: "iotex-36fc9.appspot.com",
+  messagingSenderId: "234892928023",
+  appId: "1:234892928023:web:eb418f40f087b9229aa852",
+  measurementId: "G-MBLS875KBN"
 };
 
 const app = initializeApp(firebaseConfig);

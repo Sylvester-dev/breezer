@@ -1,5 +1,8 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
+import Data from "../data_json.json";
 import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
+
+
 
 // source: https://stackoverflow.com/questions/1484506/random-color-generator
 function getRandomColor() {
@@ -10,8 +13,13 @@ function getRandomColor() {
   }
   return color;
 }
+function getRandomValue() {
+  const rand = Math.floor(Math.random() * 499);
+  return rand;
+}
 
 class FormAndPreview extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -38,9 +46,17 @@ class FormAndPreview extends Component {
     );
   };
 
+ 
+
   render() {
     return (
       <div>
+      <h1>Latitude {Data[getRandomValue()].latitude}</h1>
+      <h1>Longitude {Data[getRandomValue()].longitude}</h1>
+      <h1>Temperature {Data[getRandomValue()].temperature}</h1>
+      <h1>Pressure {Data[getRandomValue()].pressure}</h1>
+      <h1>Humidity {Data[getRandomValue()].humidity}</h1>
+      <h1>Light {Data[getRandomValue()].light}</h1>
         <div className="card mt-1">
           <div className="card-body align-items-center d-flex justify-content-center">
             <h5>Mint Your Farm Article With True Rating Using IOT based True Ratings</h5>
