@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import "./App.css";
 import Web3 from "web3";
-import CryptoBoys from "./abis/CryptoBoys.json";
+
+import CropNFT from "./abis/CropNFT.json";
 
 import FormAndPreview from "./FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -27,7 +28,7 @@ class App extends Component {
     this.state = {
       accountAddress: "",
       accountBalance: "",
-      cryptoBoysContract: null,
+      CropNFTContract: null,
       cryptoBoysCount: 0,
       cryptoBoys: [],
       loading: true,
@@ -56,7 +57,7 @@ class App extends Component {
         lastMintTime: localStorage.getItem(this.state.accountAddress),
       });
       this.state.lastMintTime === undefined || this.state.lastMintTime === null
-        ? (mintBtn.innerHTML = "Mint My Crypto Boy")
+        ? (mintBtn.innerHTML = "Mint My Article")
         : this.checkIfCanMint(parseInt(this.state.lastMintTime));
     }
   };
@@ -108,37 +109,18 @@ class App extends Component {
       this.setState({ accountBalance });
       this.setState({ loading: false });
       const networkId = await web3.eth.net.getId();
-      const networkData = CryptoBoys.networks[networkId];
-      if (networkData) {
+      if (networkId == '4690') {
         this.setState({ loading: true });
-        const cryptoBoysContract = new web3.eth.Contract(
-          CryptoBoys.abi,
-          networkData.address
+        const cropNFTContract = new web3.eth.Contract(
+          CropNFT.abi,
+          "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364"
         );
-        this.setState({ cryptoBoysContract });
+        this.setState({ cropNFTContract });
         this.setState({ contractDetected: true });
-        const cryptoBoysCount = await cryptoBoysContract.methods
-          .cryptoBoyCounter()
-          .call();
-        this.setState({ cryptoBoysCount });
-        for (var i = 1; i <= cryptoBoysCount; i++) {
-          const cryptoBoy = await cryptoBoysContract.methods
-            .allCryptoBoys(i)
-            .call();
-          this.setState({
-            cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
-          });
-        }
-        let totalTokensMinted = await cryptoBoysContract.methods
-          .getNumberOfTokensMinted()
-          .call();
-        totalTokensMinted = totalTokensMinted.toNumber();
+        
+/*         this.setState({ cryptoBoysCount }); 
         this.setState({ totalTokensMinted });
-        let totalTokensOwnedByAccount = await cryptoBoysContract.methods
-          .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
-          .call();
-        totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
-        this.setState({ totalTokensOwnedByAccount });
+        this.setState({ totalTokensOwnedByAccount }); */
         this.setState({ loading: false });
       } else {
         this.setState({ contractDetected: false });
@@ -171,43 +153,10 @@ class App extends Component {
     }
   };
 
-  mintMyNFT = async (colors, name, tokenPrice) => {
+  mintMyNFT = async (name, tokenPrice) => {
     this.setState({ loading: true });
-    const colorsArray = Object.values(colors);
-    let colorsUsed = [];
-    for (let i = 0; i < colorsArray.length; i++) {
-      if (colorsArray[i] !== "") {
-        let colorIsUsed = await this.state.cryptoBoysContract.methods
-          .colorExists(colorsArray[i])
-          .call();
-        if (colorIsUsed) {
-          colorsUsed = [...colorsUsed, colorsArray[i]];
-        } else {
-          continue;
-        }
-      }
-    }
-    const nameIsUsed = await this.state.cryptoBoysContract.methods
-      .tokenNameExists(name)
-      .call();
-    if (colorsUsed.length === 0 && !nameIsUsed) {
-      const {
-        cardBorderColor,
-        cardBackgroundColor,
-        headBorderColor,
-        headBackgroundColor,
-        leftEyeBorderColor,
-        rightEyeBorderColor,
-        leftEyeBackgroundColor,
-        rightEyeBackgroundColor,
-        leftPupilBackgroundColor,
-        rightPupilBackgroundColor,
-        mouthColor,
-        neckBackgroundColor,
-        neckBorderColor,
-        bodyBackgroundColor,
-        bodyBorderColor,
-      } = colors;
+    
+      
       let previousTokenId;
       previousTokenId = await this.state.cryptoBoysContract.methods
         .cryptoBoyCounter()
@@ -219,48 +168,19 @@ class App extends Component {
         tokenSymbol: "CB",
         tokenId: `${tokenId}`,
         name: name,
-        metaData: {
-          type: "color",
-          colors: {
-            cardBorderColor,
-            cardBackgroundColor,
-            headBorderColor,
-            headBackgroundColor,
-            leftEyeBorderColor,
-            rightEyeBorderColor,
-            leftEyeBackgroundColor,
-            rightEyeBackgroundColor,
-            leftPupilBackgroundColor,
-            rightPupilBackgroundColor,
-            mouthColor,
-            neckBackgroundColor,
-            neckBorderColor,
-            bodyBackgroundColor,
-            bodyBorderColor,
-          },
-        },
       };
       const cid = await ipfs.add(JSON.stringify(tokenObject));
       let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
       const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
       this.state.cryptoBoysContract.methods
-        .mintCryptoBoy(name, tokenURI, price, colorsArray)
+        .mintCryptoBoy(name, tokenURI, price)
         .send({ from: this.state.accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
           window.location.reload();
         });
-    } else {
-      if (nameIsUsed) {
-        this.setState({ nameIsUsed: true });
-        this.setState({ loading: false });
-      } else if (colorsUsed.length !== 0) {
-        this.setState({ colorIsUsed: true });
-        this.setState({ colorsUsed });
-        this.setState({ loading: false });
-      }
-     }
+    
   };
 
   toggleForSale = (tokenId) => {
