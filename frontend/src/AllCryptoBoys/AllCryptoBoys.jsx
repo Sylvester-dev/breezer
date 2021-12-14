@@ -10,7 +10,7 @@ const AllCryptoBoys = ({
   totalTokensMinted,
   changeTokenPrice,
   toggleForSale,
-  buyCryptoBoy,
+  buyCrop,
   users,
 }) => {
   const [loading, setLoading] = useState(false);
