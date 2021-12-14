@@ -50,12 +50,6 @@ class FormAndPreview extends Component {
   render() {
     return (
       <div>
-        <h1>Latitude {Data[getRandomValue()].latitude}</h1>
-        <h1>Longitude {Data[getRandomValue()].longitude}</h1>
-        <h1>Temperature {Data[getRandomValue()].temperature}</h1>
-        <h1>Pressure {Data[getRandomValue()].pressure}</h1>
-        <h1>Humidity {Data[getRandomValue()].humidity}</h1>
-        <h1>Light {Data[getRandomValue()].light}</h1>
         <div className="card mt-1">
           <div className="card-body align-items-center d-flex justify-content-center">
             <h5>
@@ -66,10 +60,18 @@ class FormAndPreview extends Component {
         </div>
         <form onSubmit={this.callMintMyNFTFromApp} className="pt-4 mt-1">
           <div className="row">
-            <div className="col-md-3"></div>
-            <div className="col-md-3"></div>
+            <div className="col-md-6">
+            <h1>Latitude {Data[getRandomValue()].latitude}</h1>
+            <h1>Longitude {Data[getRandomValue()].longitude}</h1>
+            <h1>Temperature {Data[getRandomValue()].temperature}</h1>
+            <h1>Pressure {Data[getRandomValue()].pressure}</h1>
+            <h1>Humidity {Data[getRandomValue()].humidity}</h1>
+            <h1>Light {Data[getRandomValue()].light}</h1>
+            </div>
+            
             <div className="col-md-6 d-flex justify-content-center align-items-center">
               {/* Select image component */}
+              <img src="https://tse2.mm.bing.net/th?id=OIP.U88J_cJjZbfpEGjWI3si7QHaEK&pid=Api&P=0&w=275&h=155" class="img-fluid" alt="Responsive image"></img>
             </div>
           </div>
           <div className="row">
