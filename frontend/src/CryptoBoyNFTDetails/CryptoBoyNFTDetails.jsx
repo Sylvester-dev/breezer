@@ -12,54 +12,69 @@ class CryptoBoyNFTDetails extends Component {
     this.props.changeTokenPrice(tokenId, newPrice);
   };
 
+  // render(){
+  //   return(
+  //     <div>
+  //       <h1>{this.props.assetName}</h1>
+  //       <h1>{this.props.humidity}</h1>
+  //       <h1>{this.props.image}</h1>
+  //       <h1>{this.props.lat}</h1>
+  //       <h1>{this.props.lon}</h1>
+  //       <h1>{this.props.price}</h1>
+  //     </div>
+  //   )
+  // }
   render() {
     return (
-      <div key={this.props.cryptoboy.tokenId.toNumber()} className="mt-4">
+      <div className="mt-4">
+      <img src="https://tse2.mm.bing.net/th?id=OIP.U88J_cJjZbfpEGjWI3si7QHaEK&pid=Api&P=0&w=275&h=155" class="img-fluid" alt="Responsive image"></img>
+     
         <p>
-          <span className="font-weight-bold">Token Id</span> :{" "}
-          {this.props.cryptoboy.tokenId.toNumber()}
+          <span className="font-weight-bold">Asset Name</span> :{" "}
+          {this.props.assetName}
         </p>
         <p>
-          <span className="font-weight-bold">Name</span> :{" "}
-          {this.props.cryptoboy.tokenName}
+          <span className="font-weight-bold">Latitude</span> :{" "}
+          {this.props.lat}
         </p>
         <p>
-          <span className="font-weight-bold">Minted By</span> :{" "}
-          {this.props.cryptoboy.mintedBy.substr(0, 5) +
-            "..." +
-            this.props.cryptoboy.mintedBy.slice(
-              this.props.cryptoboy.mintedBy.length - 5
-            )}
-        </p>
-        <p>
-          <span className="font-weight-bold">Owned By</span> :{" "}
-          {this.props.cryptoboy.currentOwner.substr(0, 5) +
-            "..." +
-            this.props.cryptoboy.currentOwner.slice(
-              this.props.cryptoboy.currentOwner.length - 5
-            )}
-        </p>
-        <p>
-          <span className="font-weight-bold">Previous Owner</span> :{" "}
-          {this.props.cryptoboy.previousOwner.substr(0, 5) +
-            "..." +
-            this.props.cryptoboy.previousOwner.slice(
-              this.props.cryptoboy.previousOwner.length - 5
-            )}
+          <span className="font-weight-bold">Longitude</span> :{" "}
+          {this.props.lon}
         </p>
         <p>
           <span className="font-weight-bold">Price</span> :{" "}
+          {this.props.price}{" "} Ξ
+        </p> 
+        <p>
+          <span className="font-weight-bold">Humidity</span> :{" "}
+          {this.props.humidity}
+        </p>
+        <p>
+          <span className="font-weight-bold">Light</span> :{" "}
+          {this.props.light}
+        </p>
+        <p>
+          <span className="font-weight-bold">Pressure</span> :{" "}
+          {this.props.pressure}
+        </p>
+        <p>
+          <span className="font-weight-bold">Rating</span> :{" "}
+          {this.props.rating}
+        </p>
+        <p>
+          <span className="font-weight-bold">Temperature</span> :{" "}
+          {this.props.temperature}
+        </p>
+        {/* <p>
+          <span className="font-weight-bold">Price</span> :{" "}
           {window.web3.utils.fromWei(
-            this.props.cryptoboy.price.toString(),
+            this.props.price.toString(),
             "Ether"
           )}{" "}
           Ξ
-        </p>
-        <p>
-          <span className="font-weight-bold">No. of Transfers</span> :{" "}
-          {this.props.cryptoboy.numberOfTransfers.toNumber()}
-        </p>
-        <div>
+        </p> */}
+       
+        {/* <div>
           {this.props.accountAddress === this.props.cryptoboy.currentOwner ? (
             <form
               onSubmit={(e) => {
@@ -98,8 +113,8 @@ class CryptoBoyNFTDetails extends Component {
               </button>
             </form>
           ) : null}
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           {this.props.accountAddress === this.props.cryptoboy.currentOwner ? (
             this.props.cryptoboy.forSale ? (
               <button
@@ -127,47 +142,19 @@ class CryptoBoyNFTDetails extends Component {
               </button>
             )
           ) : null}
-        </div>
+        </div> */}
         <div>
-          {this.props.accountAddress !== this.props.cryptoboy.currentOwner ? (
-            this.props.cryptoboy.forSale ? (
               <button
                 className="btn btn-outline-primary mt-3 w-50"
-                value={this.props.cryptoboy.price}
+                value={this.props.price}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-                onClick={(e) =>
-                  this.props.buyCryptoBoy(
-                    this.props.cryptoboy.tokenId.toNumber(),
-                    e.target.value
-                  )
-                }
+               
               >
                 Buy For{" "}
-                {window.web3.utils.fromWei(
-                  this.props.cryptoboy.price.toString(),
-                  "Ether"
-                )}{" "}
+                {this.props.price}{" "}
                 Ξ
               </button>
-            ) : (
-              <>
-                <button
-                  disabled
-                  style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-                  className="btn btn-outline-primary mt-3 w-50"
-                >
-                  Buy For{" "}
-                  {window.web3.utils.fromWei(
-                    this.props.cryptoboy.price.toString(),
-                    "Ether"
-                  )}{" "}
-                  Ξ
-                </button>
-                <p className="mt-2">Currently not for sale!</p>
-              </>
-            )
-          ) : null}
-        </div>
+      </div>
       </div>
     );
   }
