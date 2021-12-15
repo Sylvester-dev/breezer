@@ -411,13 +411,7 @@ class App extends Component {
     // getData();
     return (
       <div className="container">
-       {!this.state.metamaskConnected ? (
-          <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
-        ) : !this.state.contractDetected ? (
-          <ContractNotDeployed />
-        ) : this.state.loading ? (
-          <Loading />
-        ) : ( 
+
           <>
     
 
@@ -480,7 +474,6 @@ class App extends Component {
               />
             </HashRouter>
           </>
-           )} 
       </div>
     );
   }
