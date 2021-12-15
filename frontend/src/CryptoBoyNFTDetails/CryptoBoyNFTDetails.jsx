@@ -18,9 +18,7 @@ class CryptoBoyNFTDetails extends Component {
   }
 
   
-  callChangeTokenPriceFromApp = (tokenId, newPrice) => {
-    this.props.changeTokenPrice(tokenId, newPrice);
-  };
+
 
   // render(){
   //   return(
@@ -37,43 +35,46 @@ class CryptoBoyNFTDetails extends Component {
   render() {
     return (
       <div className="mt-4">
-      <img src="https://tse2.mm.bing.net/th?id=OIP.U88J_cJjZbfpEGjWI3si7QHaEK&pid=Api&P=0&w=275&h=155" class="img-fluid" alt="Responsive image"></img>
-     
+        <img
+          src="https://tse2.mm.bing.net/th?id=OIP.U88J_cJjZbfpEGjWI3si7QHaEK&pid=Api&P=0&w=275&h=155"
+          class="img-fluid"
+          alt="Responsive image"
+        ></img>
+
         <p>
           <span className="font-weight-bold">Asset Name</span> :{" "}
           {this.props.assetName}
         </p>
         <p>
-          <span className="font-weight-bold">Latitude</span> :{" "}
-          {this.props.lat}
+          <span className="font-weight-bold">Latitude</span> : {this.props.lat}
         </p>
         <p>
-          <span className="font-weight-bold">Longitude</span> :{" "}
-          {this.props.lon}
+          <span className="font-weight-bold">Longitude</span> : {this.props.lon}
         </p>
         <p>
-          <span className="font-weight-bold">Price</span> :{" "}
-          {this.props.price}{" "} Ξ
-        </p> 
+          <span className="font-weight-bold">Price</span> : {this.props.price} Ξ
+        </p>
         <p>
           <span className="font-weight-bold">Humidity</span> :{" "}
           {this.props.humidity}
         </p>
         <p>
-          <span className="font-weight-bold">Light</span> :{" "}
-          {this.props.light}
+          <span className="font-weight-bold">Light</span> : {this.props.light}
         </p>
         <p>
           <span className="font-weight-bold">Pressure</span> :{" "}
           {this.props.pressure}
         </p>
         <p>
-          <span className="font-weight-bold">Rating</span> :{" "}
-          {this.props.rating}
+          <span className="font-weight-bold">Rating</span> : {this.props.rating}
         </p>
         <p>
           <span className="font-weight-bold">Temperature</span> :{" "}
           {this.props.temperature}
+        </p>
+        <p>
+          <span className="font-weight-bold">TokenId</span> :{" "}
+          {this.props.tokenId}
         </p>
         {/* <p>
           <span className="font-weight-bold">Price</span> :{" "}
@@ -83,7 +84,7 @@ class CryptoBoyNFTDetails extends Component {
           )}{" "}
           Ξ
         </p> */}
-       
+
         {/* <div>
           {this.props.accountAddress === this.props.cryptoboy.currentOwner ? (
             <form
@@ -154,17 +155,17 @@ class CryptoBoyNFTDetails extends Component {
           ) : null}
         </div> */}
         <div>
-              <button
-                className="btn btn-outline-primary mt-3 w-50"
-                value={this.props.price}
-                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-                onClick={ () => console.log()}
-              >
-                Buy For{" "}
-                {this.props.price}{" "}
-                Ξ
-              </button>
-      </div>
+          <button
+            className="btn btn-outline-primary mt-3 w-50"
+            value={this.props.price}
+            style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+            onClick={() =>
+              this.props.buyCrop(this.props.tokenId, this.props.price)
+            }
+          >
+            Buy For {this.props.price} Ξ
+          </button>
+        </div>
       </div>
     );
   }

@@ -22,11 +22,7 @@ const Navbar = () => {
             style={{ fontSize: "0.8rem", letterSpacing: "0.2rem" }}
             className="navbar-nav ml-auto"
           >
-            <li className="nav-item">
-              <Link to="/" className="nav-link">
-                Home
-              </Link>
-            </li>
+            
             <li className="nav-item">
               <Link to="/mint" className="nav-link">
                 Mint NFT
@@ -42,11 +38,11 @@ const Navbar = () => {
                 My Tokens
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/queries" className="nav-link">
                 Queries
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
