@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
+import './contracts/token/ERC721/IERC721.sol';
 
 
 contract Market {
@@ -15,6 +15,8 @@ contract Market {
         bool isSold;
         
     }
+    
+    
     
     AuctionItem[] public itemsForSale; 
     mapping (address => mapping (uint256 => bool)) activeItems;

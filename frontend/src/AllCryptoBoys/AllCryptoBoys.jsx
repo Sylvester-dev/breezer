@@ -74,8 +74,8 @@ const AllCryptoBoys = ({
                 pressure={user.pressure}
                 rating={user.rating}
                 temperature={user.temperature}
-                
-
+                tokenId={user.token}
+                buyCrop={buyCrop}
                 
               />
             </div>

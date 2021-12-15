@@ -33,6 +33,7 @@ module.exports = {
       gas: 8500000,
       gasPrice: 1000000000000,
     },
+    
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
