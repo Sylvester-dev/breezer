@@ -1,4 +1,13 @@
 import React, { Component } from "react";
+import Web3 from "web3";
+import Market from "../abis/Market.json";
+
+
+
+const Sell = () => {
+  
+};
+
 
 class CryptoBoyNFTDetails extends Component {
   constructor(props) {
@@ -8,6 +17,7 @@ class CryptoBoyNFTDetails extends Component {
     };
   }
 
+  
   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
     this.props.changeTokenPrice(tokenId, newPrice);
   };
@@ -148,7 +158,7 @@ class CryptoBoyNFTDetails extends Component {
                 className="btn btn-outline-primary mt-3 w-50"
                 value={this.props.price}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-               
+                onClick={ () => console.log()}
               >
                 Buy For{" "}
                 {this.props.price}{" "}

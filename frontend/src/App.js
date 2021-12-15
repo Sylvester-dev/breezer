@@ -160,7 +160,7 @@ class App extends Component {
         console.log(marketContract)
         this.setState({ contractDetected: true });
         
-/*         this.setState({ cryptoBoysCount }); 
+/*      this.setState({ cryptoBoysCount }); 
         this.setState({ totalTokensMinted });
         this.setState({ totalTokensOwnedByAccount }); */
         this.setState({ loading: false });
@@ -387,10 +387,10 @@ class App extends Component {
       });
   };
 
-  buyCryptoBoy = (tokenId, price) => {
+  buyCrop = (price) => {
     this.setState({ loading: true });
-    this.state.cryptoBoysContract.methods
-      .buyToken(tokenId)
+    this.state.marketContract.methods
+      .buyItem("2")
       .send({ from: this.state.accountAddress, value: price })
       .on("confirmation", () => {
         this.setState({ loading: false });
@@ -448,8 +448,9 @@ class App extends Component {
                     totalTokensMinted={this.state.totalTokensMinted}
                     changeTokenPrice={this.changeTokenPrice}
                     toggleForSale={this.toggleForSale}
-                    buyCryptoBoy={this.buyCryptoBoy}
+                    buyCrop={this.buyCrop}
                     users={this.state.users}
+                    
                  
                   />
                 )}
