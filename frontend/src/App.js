@@ -27,6 +27,8 @@ import Navbar from "./Navbar/Navbar";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import Queries from "./Queries/Queries";
 import axios from "axios";
+import AllMedicals from "./AllMedicals/AllMedicals";
+import MedicalForm from "./MedicalForm/MedicalForm";
 
 
 function getRandomValue() {
@@ -63,6 +65,7 @@ class App extends Component {
       colorsUsed: [],
       lastMintTime: null,
       users: [],
+      medicalUsers:[],
       assetName:"",
       image:"",
       lat:"",
@@ -73,6 +76,8 @@ class App extends Component {
       pressure:"",
       rating:"",
       temperature:"",
+      timestamp:"",
+      distance:"",
     };
   }
 
@@ -82,6 +87,7 @@ class App extends Component {
     await this.setMetaData();
     await this.setMintBtnTimer();
     await this.getUsers();
+    await this.getMedUsers();
   };
 
   setMintBtnTimer = () => {
@@ -147,12 +153,12 @@ class App extends Component {
         this.setState({ loading: true });
         const cropNFTContract = new web3.eth.Contract(
           CropNFT.abi,
-          "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364"
+          "0x8b8c57151707BE5bEDce3E24696695C2683a5597"
         );
         this.setState({ cropNFTContract });
         const marketContract = new web3.eth.Contract(
           Market.abi,
-          "0x3160a2cf5A2649fe372262D775848d1bB75FC56F"
+          "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79"
         );
         
         this.setState({ marketContract });
@@ -206,11 +212,20 @@ class App extends Component {
     // console.log(data);
   };
 
+  getMedUsers = async () => {
+    const MedusersCollectionRef = collection(db, "medicalUsers");
+    const data = await getDocs(MedusersCollectionRef);
+    this.setState({
+      medicalUsers:data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    });
+    // console.log(data);
+  };
+
 
 
 
   mintMyNFT = async (name, tokenPrice) => {
-    this.setState({ loading: true });
+    this.setState({ loading: false });
     
     
       let ImageList = [
@@ -258,7 +273,14 @@ class App extends Component {
             pinata_secret_api_key: pinataSecretApiKey,
           },
         }) 
+        let createCrop = await this.state.cropNFTContract.methods
+          .createItem(json_upload)
+          .send({ from: this.state.accountAddress });
+
+        console.log(createCrop.events.Transfer.returnValues.tokenId);
+        let tid = createCrop.events.Transfer.returnValues.tokenId;
         const usersCollectionRef = collection(db, "users");
+ 
         console.log(json_upload)
         let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
        // console.log(link);
@@ -288,6 +310,7 @@ class App extends Component {
             pressure: this.state.pressure ,
             rating: this.state.rating ,
             temperature: this.state.temperature ,
+            token: tid ,
             });
         }
     getData();
@@ -307,9 +330,9 @@ class App extends Component {
 
       // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
       
-      let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
+      /* let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
 
-      console.log(createCrop.events.Transfer.returnValues.tokenId);
+      console.log(createCrop.events.Transfer.returnValues.tokenId); */
     
 
       
@@ -317,10 +340,10 @@ class App extends Component {
         .getApproved(createCrop.events.Transfer.returnValues.tokenId)
         .call();
 
-      if (approvedAddress != "0x3160a2cf5A2649fe372262D775848d1bB75FC56F") {
+      if (approvedAddress != "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79") {
         await this.state.cropNFTContract.methods
           .approve(
-            "0x3160a2cf5a2649fe372262d775848d1bb75fc56f",
+            "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79",
             createCrop.events.Transfer.returnValues.tokenId
           )
           .send({ from: this.state.accountAddress });
@@ -328,7 +351,7 @@ class App extends Component {
       let market = await this.state.marketContract.methods
         .addItemToMarket(
           createCrop.events.Transfer.returnValues.tokenId,
-          "0x599427a250Bb39a96c4cddDAAbe0b5ac331CB364",
+          "0x8b8c57151707BE5bEDce3E24696695C2683a5597",
           tokenPrice
         )
         .send({ from: this.state.accountAddress });
@@ -336,7 +359,173 @@ class App extends Component {
 
         console.log(market)
 
+        this.setState({ loading: false });
+      
 
+      
+     /*  const tokenObject = {
+        tokenName: "Crypto Boy",
+        tokenSymbol: "CB",
+        tokenId: `${tokenId}`,
+        name: name,
+      };
+
+      const cid = await ipfs.add(JSON.stringify(tokenObject));
+      let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
+      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
+      
+      this.state.cryptoBoysContract.methods
+        .mintCryptoBoy(name, tokenURI, price)
+        .send({ from: this.state.accountAddress })
+        .on("confirmation", () => {
+          localStorage.setItem(this.state.accountAddress, new Date().getTime());
+          this.setState({ loading: false });
+          window.location.reload();
+        }); */
+    
+  };
+  mintMedNFT = async (name, tokenPrice) => {
+    this.setState({ loading: false });
+    
+    
+      let ImageList = [
+        "QmcxkthdfynvjuBNEEafXJU6rCzz978rpfygPkjNufCiPe",
+        "QmPHzW1EsANzwyr5EeyRVPfYTd1jReLRbkQP8Bm5XKu7RP",
+        "QmaKStQsPEGHujwwEyWxqVKf9nPDLepn7S9RZBLtm8S4Xh",
+        "QmdAnNN5L2fH1KYycLpVt5tdzKSNYyMQGwSaeULRXer36j",
+        "Qmd5uQPNJ9kL1rNm1VCiXyhS14iLEvWjT3Uvpm2HetqNDp",
+        "QmPzfVuA4GsuDCAkGRYmZUFGxXdrtEWRFyANddgfJJQvGX",
+        "QmahVdUvX71a7UfGv2FYrbsqWHVGjknyeZBVofEHPQnq6y",
+        "QmeRfX6HdBREJX6fLyMNfh4jeHZf7wzX7E7atEYjbhHdei",
+      ];
+
+      
+      const tokenObject = {
+        AssetName: name,
+        Image: ImageList[getRandomValue()],
+        Lat:Data[getRandomValue()].latitude,
+        Long:Data[getRandomValue()].longitude,
+        temperature:Data[getRandomValue()].temperature2,
+        pressure:Data[getRandomValue()].pressure,
+        humidity:Data[getRandomValue()].humidity,
+        light:Data[getRandomValue()].light,
+        timestamp:Data[getRandomValue()].timestamp,
+        distance:Data[getRandomValue()].random,
+        rating:"8",
+        Price:tokenPrice
+
+      };
+   
+    
+
+
+
+      console.log(ImageList[getRandomValue()]);
+      const pinataApiKey = "a770d310d147135d5ec4";
+      const pinataSecretApiKey =
+        "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
+      const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+
+      const json_upload = await axios
+        .post(jsonUrl, tokenObject, {
+          maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
+          headers: {
+            "Content-Type": "application/json",
+            pinata_api_key: pinataApiKey,
+            pinata_secret_api_key: pinataSecretApiKey,
+          },
+        }) 
+        let createCrop = await this.state.cropNFTContract.methods
+          .createItem(json_upload)
+          .send({ from: this.state.accountAddress });
+
+        console.log(createCrop.events.Transfer.returnValues.tokenId);
+        let tid = createCrop.events.Transfer.returnValues.tokenId;
+ 
+        const MedusersCollectionRef = collection(db, "medicalUsers");
+        console.log(json_upload)
+        let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+       // console.log(link);
+        const getData = async () => {
+         await Axios.get(link).then((response)=>{
+            console.log(response);
+             this.setState({assetName : response.data.AssetName});
+             this.setState({image : response.data.Image});
+             this.setState({lat : response.data.Lat});
+             this.setState({lon : response.data.Long});
+             this.setState({humidity : response.data.humidity});
+             this.setState({price : response.data.Price});
+             this.setState({light : response.data.light});
+             this.setState({pressure : response.data.pressure});
+             this.setState({rating : response.data.rating});
+             this.setState({temperature : response.data.temperature});
+             this.setState({timestamp : response.data.timestamp});
+             this.setState({distance : response.data.distance});
+            //  console.log(this.state.assetName);
+          })
+          await addDoc(MedusersCollectionRef, { 
+            assetName: this.state.assetName ,
+            humidity: this.state.humidity ,
+            image: this.state.image ,
+            lat: this.state.lat ,
+            lon: this.state.lon ,
+            price: this.state.price ,
+            light: this.state.light ,
+            pressure: this.state.pressure ,
+            rating: this.state.rating ,
+            temperature: this.state.temperature ,
+            timestamp: this.state.timestamp,
+            distance: this.state.distance,
+            token: tid ,
+            });
+        }
+    getData();
+        // const createUser = async () => {
+        //   await addDoc(usersCollectionRef, { 
+        //     assetName: this.state.assetName ,
+        //     humidity: this.state.humidity ,
+        //     image: this.state.image ,
+        //     lat: this.state.lat ,
+        //     lon: this.state.lon ,
+        //     price: this.state.price ,
+            
+        //     });
+        // };
+        
+        //createUser();
+
+      // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
+      
+      /* let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
+
+      console.log(createCrop.events.Transfer.returnValues.tokenId); */
+    
+
+      
+      const approvedAddress = await this.state.cropNFTContract.methods
+        .getApproved(createCrop.events.Transfer.returnValues.tokenId)
+        .call();
+
+      if (approvedAddress != "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79") {
+        await this.state.cropNFTContract.methods
+          .approve(
+            "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79",
+            createCrop.events.Transfer.returnValues.tokenId
+          )
+          .send({ from: this.state.accountAddress });
+      }
+      let market = await this.state.marketContract.methods
+        .addItemToMarket(
+          createCrop.events.Transfer.returnValues.tokenId,
+          "0x8b8c57151707BE5bEDce3E24696695C2683a5597",
+          tokenPrice
+        )
+        .send({ from: this.state.accountAddress });
+
+
+        console.log(market)
+
+        this.setState({ loading: false });
       
 
       
@@ -387,15 +576,30 @@ class App extends Component {
       });
   };
 
-  buyCrop = (price) => {
-    this.setState({ loading: true });
+  buyCrop = (tkId , price) => {
+    let gas_price
+    //this.setState({ loading: true });
+    window.web3.eth.getGasPrice().then((result) => {
+      gas_price = window.web3.utils.fromWei(result, "ether");
+      console.log("gas price is: ", gas_price);
+    });
+
+    //console.log(typeof(window.web3.utils.toWei(price, "Ether")));
+    console.log( Number(tkId), Number(price));
     this.state.marketContract.methods
-      .buyItem("2")
-      .send({ from: this.state.accountAddress, value: price })
-      .on("confirmation", () => {
+      .buyItem(Number(tkId))
+      .send({
+        from: this.state.accountAddress,
+        value: window.web3.utils.toWei(price, "Ether"),
+        gas: 85000,
+        gasPrice: 1000000000000,
+      })
+      .on("receipt", (r) => {
+        console.log(r);
         this.setState({ loading: false });
-        window.location.reload();
-      });
+      }); 
+      console.log(this.state.marketContract)
+      
   };
 
  
@@ -411,10 +615,14 @@ class App extends Component {
     // getData();
     return (
       <div className="container">
-
+        {!this.state.metamaskConnected ? (
+          <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
+        ) : !this.state.contractDetected ? (
+          <ContractNotDeployed />
+        ) : this.state.loading ? (
+          <Loading />
+        ) : (
           <>
-    
-
             <HashRouter basename="/">
               <Navbar />
               <Route
@@ -436,6 +644,20 @@ class App extends Component {
                     colorIsUsed={this.state.colorIsUsed}
                     colorsUsed={this.state.colorsUsed}
                     setMintBtnTimer={this.setMintBtnTimer}
+                    users={this.state.users}
+                  />
+                )}
+              />
+              <Route
+                path="/mint_medical"
+                render={() => (
+                  <MedicalForm
+                    mintMedNFT={this.mintMedNFT}
+                    nameIsUsed={this.state.nameIsUsed}
+                    colorIsUsed={this.state.colorIsUsed}
+                    colorsUsed={this.state.colorsUsed}
+                    setMintBtnTimer={this.setMintBtnTimer}
+                    medicalUsers={this.state.medicalUsers}
                   />
                 )}
               />
@@ -450,8 +672,20 @@ class App extends Component {
                     toggleForSale={this.toggleForSale}
                     buyCrop={this.buyCrop}
                     users={this.state.users}
-                    
-                 
+                  />
+                )}
+              />
+              <Route
+                path="/medical"
+                render={() => (
+                  <AllMedicals
+                    accountAddress={this.state.accountAddress}
+                    cryptoBoys={this.state.cryptoBoys}
+                    totalTokensMinted={this.state.totalTokensMinted}
+                    changeTokenPrice={this.changeTokenPrice}
+                    toggleForSale={this.toggleForSale}
+                    buyCrop={this.buyCrop}
+                    medicalUsers={this.state.medicalUsers}
                   />
                 )}
               />
@@ -468,13 +702,14 @@ class App extends Component {
                 )}
               />
               <Route
-                 path="/queries"
+                path="/queries"
                 render={() => (
                   <Queries cryptoBoysContract={this.state.cryptoBoysContract} />
                 )}
               />
             </HashRouter>
           </>
+        )}
       </div>
     );
   }

@@ -48,6 +48,7 @@ class FormAndPreview extends Component {
  
 
   render() {
+    // let url = "https://ipfs.io/ipfs/"+this.props.image;
     return (
       <div>
         <div className="card mt-1">
@@ -71,7 +72,7 @@ class FormAndPreview extends Component {
             
             <div className="col-md-6 d-flex justify-content-center align-items-center">
               {/* Select image component */}
-              <img src="https://tse2.mm.bing.net/th?id=OIP.U88J_cJjZbfpEGjWI3si7QHaEK&pid=Api&P=0&w=275&h=155" class="img-fluid" alt="Responsive image"></img>
+              <img src="https://tse4.mm.bing.net/th?id=OIP.4e1OgmuDE5oxtBXkAgo7wQHaHL&pid=Api&P=0&w=300&h=300"></img>
             </div>
           </div>
           <div className="row">
