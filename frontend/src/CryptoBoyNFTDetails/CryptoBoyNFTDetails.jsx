@@ -40,6 +40,7 @@ class CryptoBoyNFTDetails extends Component {
           src={url}
           class="img-fluid"
           alt="Responsive image"
+          style={{ width: "100%", height: "300px" }}
         ></img>
 
         <p>

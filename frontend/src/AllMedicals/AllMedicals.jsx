@@ -75,8 +75,8 @@ const AllMedicals = ({
                 rating={user.rating}
                 temperature={user.temperature}
                 tokenId={user.token}
-                distance={this.distance}
-                timestamp={this.timestamp}
+                distance={user.distance}
+                timestamp={user.timestamp}
                 buyCrop={buyCrop}
                 
               />

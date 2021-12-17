@@ -38,13 +38,15 @@ function getRandomValue() {
 
 
 
-/* const ipfsClient = require("ipfs-http-client");
+
+const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https",
 });
- */
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -253,12 +255,12 @@ class App extends Component {
         Price:tokenPrice
 
       };
+
+      const cid = await ipfs.add(JSON.stringify(tokenObject));
+      let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
    
-    
-
-
-
-      console.log(ImageList[getRandomValue()]);
+  
+      /* console.log(ImageList[getRandomValue()]);
       const pinataApiKey = "a770d310d147135d5ec4";
       const pinataSecretApiKey =
         "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
@@ -272,33 +274,34 @@ class App extends Component {
             pinata_api_key: pinataApiKey,
             pinata_secret_api_key: pinataSecretApiKey,
           },
-        }) 
+        })  */
         let createCrop = await this.state.cropNFTContract.methods
-          .createItem(json_upload)
+          .createItem(tokenURI)
           .send({ from: this.state.accountAddress });
 
         console.log(createCrop.events.Transfer.returnValues.tokenId);
         let tid = createCrop.events.Transfer.returnValues.tokenId;
         const usersCollectionRef = collection(db, "users");
  
-        console.log(json_upload)
-        let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+        
+        console.log(tokenURI);
+        
        // console.log(link);
         const getData = async () => {
-         await Axios.get(link).then((response)=>{
-            console.log(response);
-             this.setState({assetName : response.data.AssetName});
-             this.setState({image : response.data.Image});
-             this.setState({lat : response.data.Lat});
-             this.setState({lon : response.data.Long});
-             this.setState({humidity : response.data.humidity});
-             this.setState({price : response.data.Price});
-             this.setState({light : response.data.light});
-             this.setState({pressure : response.data.pressure});
-             this.setState({rating : response.data.rating});
-             this.setState({temperature : response.data.temperature});
-            //  console.log(this.state.assetName);
-          })
+         await Axios.get(tokenURI).then((response) => {
+           console.log(response);
+           this.setState({ assetName: response.data.AssetName });
+           this.setState({ image: response.data.Image });
+           this.setState({ lat: response.data.Lat });
+           this.setState({ lon: response.data.Long });
+           this.setState({ humidity: response.data.humidity });
+           this.setState({ price: response.data.Price });
+           this.setState({ light: response.data.light });
+           this.setState({ pressure: response.data.pressure });
+           this.setState({ rating: response.data.rating });
+           this.setState({ temperature: response.data.temperature });
+           //  console.log(this.state.assetName);
+         });
           await addDoc(usersCollectionRef, { 
             assetName: this.state.assetName ,
             humidity: this.state.humidity ,
