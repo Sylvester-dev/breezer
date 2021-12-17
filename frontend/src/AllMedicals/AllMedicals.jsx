@@ -32,7 +32,7 @@ const AllMedicals = ({
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           <h5>
-            Total No. of Breeze's Minted On The Platform :{" "}
+            Total No. of Breeze's Med Minted On The Platform :{" "}
             {medicalUsers.length}
           </h5>
         </div>

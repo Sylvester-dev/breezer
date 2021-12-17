@@ -63,12 +63,14 @@ class MedicalForm extends Component {
         <form onSubmit={this.callMintMyNFTFromApp} className="pt-4 mt-1">
           <div className="row">
             <div className="col-md-6">
-            <h1>Latitude {Data[getRandomValue()].latitude}</h1>
-            <h1>Longitude {Data[getRandomValue()].longitude}</h1>
-            <h1>Temperature {Data[getRandomValue()].temperature}</h1>
-            <h1>Pressure {Data[getRandomValue()].pressure}</h1>
-            <h1>Humidity {Data[getRandomValue()].humidity}</h1>
-            <h1>Light {Data[getRandomValue()].light}</h1>
+            <h1 style={{ fontSize: "small"}}>Fetching data from device...</h1>
+            <h1 style={{ fontSize: "inherit"}}>Latitude: {Data[getRandomValue()].latitude}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Longitude: {Data[getRandomValue()].longitude}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Storage Temperature: {Data[getRandomValue()].temperature2}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Pressure: {Data[getRandomValue()].pressure}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Humidity: {Data[getRandomValue()].humidity}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Light: {Data[getRandomValue()].light}</h1>
+            <h1 style={{ fontSize: "inherit"}}>Manufactured Timestamp: {Data[getRandomValue()].timestamp}</h1>
             </div>
             
             <div className="col-md-6 d-flex justify-content-center align-items-center">

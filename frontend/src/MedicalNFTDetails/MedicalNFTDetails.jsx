@@ -61,48 +61,49 @@ class MedicalNFTDetails extends Component {
           alt="Responsive image"
           style={{ width: "100%", height: "300px" }}
         ></img>
-
+        <p>
+          <span className="font-weight-bold">TokenId</span> :{" "}
+          {this.props.tokenId}
+        </p>
         <p>
           <span className="font-weight-bold">Medical Name</span> :{" "}
           {this.props.assetName}
         </p>
-        <p>
+        {/* <p>
           <span className="font-weight-bold">Timestamp</span> :{" "}
           {this.props.timestamp}
-        </p>
+        </p> */}
         <p>
           <span className="font-weight-bold">Location</span> : {this.props.lat}{" "}
           , {this.props.lon}
         </p>
         <p>
           <span className="font-weight-bold">Distance from store</span> :{" "}
-          {this.props.distance}
+          {this.props.distance} Miles
         </p>
         <p>
           <span className="font-weight-bold">Price</span> : {this.props.price} Ξ
         </p>
-        <p>
+        {/* <p>
           <span className="font-weight-bold">Humidity</span> :{" "}
           {this.props.humidity}
-        </p>
-        <p>
+        </p> */}
+        {/* <p>
           <span className="font-weight-bold">Light</span> : {this.props.light}
-        </p>
-        <p>
+        </p> */}
+        {/* <p>
           <span className="font-weight-bold">Pressure</span> :{" "}
           {this.props.pressure}
-        </p>
-        <p>
-          <span className="font-weight-bold">Rating</span> : {this.props.rating}
-        </p>
+        </p> */}
         <p>
           <span className="font-weight-bold">Storage Temperature</span> :{" "}
           {this.props.temperature}
         </p>
         <p>
-          <span className="font-weight-bold">TokenId</span> :{" "}
-          {this.props.tokenId}
+          <span className="font-weight-bold">Rating</span> : {this.props.rating}
         </p>
+
+
         {/* <p>
           <span className="font-weight-bold">Price</span> :{" "}
           {window.web3.utils.fromWei(

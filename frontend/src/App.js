@@ -32,6 +32,10 @@ import MedicalForm from "./MedicalForm/MedicalForm";
 
 
 function getRandomValue() {
+  const rand = Math.floor(Math.random() * 499);
+  return rand;
+}
+function getRandomVal() {
   const rand = Math.floor((Math.random() * 10) % 7);
   return rand;
 }
@@ -225,7 +229,7 @@ class App extends Component {
 
 
   mintMyNFT = async (name, tokenPrice) => {
-    this.setState({ loading: false });
+    this.setState({ loading: true });
     
     
       let ImageList = [
@@ -242,7 +246,7 @@ class App extends Component {
       
       const tokenObject = {
         AssetName: name,
-        Image: ImageList[getRandomValue()],
+        Image: ImageList[getRandomVal()],
         Lat:Data[getRandomValue()].latitude,
         Long:Data[getRandomValue()].longitude,
         temperature:Data[getRandomValue()].temperature,
@@ -255,37 +259,52 @@ class App extends Component {
       };
 
       const cid = await ipfs.add(JSON.stringify(tokenObject));
-      let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
+      let tokenURI = `https://ipfs.io/ipfs/${cid.path}`;
+      console.log(tokenURI);
    
   
 
 
-      console.log(ImageList[getRandomValue()]);
-      const pinataApiKey = "a770d310d147135d5ec4";
-      const pinataSecretApiKey =
-        "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
-      const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+      // console.log(ImageList[getRandomValue()]);
+      // const pinataApiKey = "a770d310d147135d5ec4";
+      // const pinataSecretApiKey =
+      //   "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
+      // const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
 
-      const json_upload = await axios
-        .post(jsonUrl, tokenObject, {
-          maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
-          headers: {
-            "Content-Type": "application/json",
-            pinata_api_key: pinataApiKey,
-            pinata_secret_api_key: pinataSecretApiKey,
-          },
-        }) 
+      // const json_upload = await axios
+      //   .post(jsonUrl, tokenObject, {
+      //     maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       pinata_api_key: pinataApiKey,
+      //       pinata_secret_api_key: pinataSecretApiKey,
+      //     },
+      //   }) 
         let createCrop = await this.state.cropNFTContract.methods
-          .createItem(json_upload)
+          .createItem(tokenURI)
           .send({ from: this.state.accountAddress });
 
         console.log(createCrop.events.Transfer.returnValues.tokenId);
         let tid = createCrop.events.Transfer.returnValues.tokenId;
         const usersCollectionRef = collection(db, "users");
- 
-        console.log(json_upload)
-        let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+        console.log(tokenURI);
+
+      let pressure_mean = 25
+      let TEMPERATURE_mean = 22;
+      let HUMIDITY_mean = 30;
+      let light_mean = 40;
+
+        
+        let link = tokenURI;
        // console.log(link);
+       let star = (this.state.pressure - pressure_mean) + (this.state.temperature - TEMPERATURE_mean) +
+          (this.state.humidity - HUMIDITY_mean) +
+          (this.state.light - light_mean);
+      
+          if(star > 0)
+          { star += 2.5}
+          else if (star <= 0)
+          {star -= 2.5}
         const getData = async () => {
          await Axios.get(link).then((response)=>{
             console.log(response);
@@ -297,10 +316,15 @@ class App extends Component {
              this.setState({price : response.data.Price});
              this.setState({light : response.data.light});
              this.setState({pressure : response.data.pressure});
-             this.setState({rating : response.data.rating});
+             this.setState({rating : star});
              this.setState({temperature : response.data.temperature});
+             this.setState({ liink: tokenURI });
             //  console.log(this.state.assetName);
           })
+
+              
+          
+
           await addDoc(usersCollectionRef, { 
             assetName: this.state.assetName ,
             humidity: this.state.humidity ,
@@ -310,7 +334,7 @@ class App extends Component {
             price: this.state.price ,
             light: this.state.light ,
             pressure: this.state.pressure ,
-            rating: this.state.rating ,
+            rating: star ,
             temperature: this.state.temperature ,
             link: this.state.liink,
             token: tid ,
@@ -414,7 +438,7 @@ class App extends Component {
     
   };
   mintMedNFT = async (name, tokenPrice) => {
-    this.setState({ loading: false });
+    this.setState({ loading: true });
     
     
       let ImageList = [
@@ -431,7 +455,7 @@ class App extends Component {
       
       const tokenObject2 = {
         AssetName: name,
-        Image: ImageList[getRandomValue()],
+        Image: ImageList[getRandomVal()],
         Lat:Data[getRandomValue()].latitude,
         Long:Data[getRandomValue()].longitude,
         temperature:Data[getRandomValue()].temperature2,
@@ -446,7 +470,7 @@ class App extends Component {
       };
    
     const cid = await ipfs.add(JSON.stringify(tokenObject2));
-    let tokenURI_2 = `https://ipfs.infura.io/ipfs/${cid.path}`;
+    let tokenURI_2 = `https://ipfs.io/ipfs/${cid.path}`;
 
 
 
@@ -474,9 +498,22 @@ class App extends Component {
  
         const MedusersCollectionRef = collection(db, "medicalUsers");
         console.log(tokenURI_2);
+
+      let pressure_mean = 25
+      let TEMPERATURE_mean = 22;
+      let HUMIDITY_mean = 30;
+      let light_mean = 40;
         
        // console.log(link);
         const getData = async () => {
+          let star = (this.state.pressure - pressure_mean) + (this.state.temperature - TEMPERATURE_mean) +
+          (this.state.humidity - HUMIDITY_mean) +
+          (this.state.light - light_mean);
+      
+          if(star > 0)
+          { star += 2.5}
+          else if (star <= 0)
+          {star -= 2.5}
          await Axios.get(tokenURI_2).then((response) => {
            console.log(response);
            this.setState({ assetName: response.data.AssetName });
@@ -487,13 +524,16 @@ class App extends Component {
            this.setState({ price: response.data.Price });
            this.setState({ light: response.data.light });
            this.setState({ pressure: response.data.pressure });
-           this.setState({ rating: response.data.rating });
+           this.setState({ rating: star });
            this.setState({ temperature: response.data.temperature });
            this.setState({ timestamp: response.data.timestamp });
            this.setState({ distance: response.data.distance });
            this.setState({ liink: tokenURI_2 });
            //  console.log(this.state.assetName);
          });
+
+
+
           await addDoc(MedusersCollectionRef, { 
             assetName: this.state.assetName ,
             humidity: this.state.humidity ,
@@ -503,7 +543,7 @@ class App extends Component {
             price: this.state.price ,
             light: this.state.light ,
             pressure: this.state.pressure ,
-            rating: this.state.rating ,
+            rating: star ,
             temperature: this.state.temperature ,
             timestamp: this.state.timestamp,
             distance: this.state.distance,
