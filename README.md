@@ -17,3 +17,14 @@ It is here to replace food safety licenses we use today.(more authentic with rea
 
 
 We use the IOT data by Tru-stream as an example parameter and use it to make an nft that represents the rating patch for a pack of crops/medicine, also written a market contract so one can buy from marketplace
+
+## What we doing:
+
+- Collecting immense amounts of IoT devices data on a daily basis to predict rating of our farm and medical products
+- Users can track position of their product, know the conditions in which they are kept and predict rating based on data
+- we can mint our crop/medicine nft based on the data collected and put that on market for sale
+- The nft represents the crop/medicine package and the rating assists customers in selecting the best product
+
+It is an NFT market where you can create IOTEX-based ERC721-implemented breeze NFTs and manage them. IoT and blockchain give us the capability to use IOT data to rate the freshness parameters of crops and medicines using Tru-Stream and IOTEX.
+
+
