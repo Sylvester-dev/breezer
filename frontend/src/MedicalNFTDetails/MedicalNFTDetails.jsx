@@ -4,21 +4,39 @@ import Market from "../abis/Market.json";
 
 
 
-const Sell = () => {
-  
-};
-
 
 class MedicalNFTDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       newCryptoBoyPrice: "",
+      getRating: null,
     };
   }
 
-  
+ /*  getRating = () => {
+    console.log(this.props.pressure);
 
+    let pressure_mean = 25;
+    let TEMPERATURE_mean = 22;
+    let HUMIDITY_mean = 30;
+    let light_mean = 40;
+
+    let rating =
+      this.props.pressure -
+      pressure_mean +
+      (this.props.temperature - TEMPERATURE_mean) +
+      (this.props.humidity - HUMIDITY_mean) +
+      (this.props.light - light_mean);
+
+    if (rating > 0) {
+      rating += 2.5;
+    } else if (rating <= 0) {
+      rating -= 2.5;
+    }
+
+    console.log(rating);
+  }; */
 
   // render(){
   //   return(
@@ -41,6 +59,7 @@ class MedicalNFTDetails extends Component {
           src={url}
           class="img-fluid"
           alt="Responsive image"
+          style={{ width: "100%", height: "300px" }}
         ></img>
 
         <p>
@@ -48,13 +67,16 @@ class MedicalNFTDetails extends Component {
           {this.props.assetName}
         </p>
         <p>
-          <span className="font-weight-bold">Timestamp</span> : {this.props.timestamp}
+          <span className="font-weight-bold">Timestamp</span> :{" "}
+          {this.props.timestamp}
         </p>
         <p>
-          <span className="font-weight-bold">Location</span> : {this.props.lat} , {this.props.lon}
+          <span className="font-weight-bold">Location</span> : {this.props.lat}{" "}
+          , {this.props.lon}
         </p>
         <p>
-          <span className="font-weight-bold">Distance from store</span> : {this.props.distance}
+          <span className="font-weight-bold">Distance from store</span> :{" "}
+          {this.props.distance}
         </p>
         <p>
           <span className="font-weight-bold">Price</span> : {this.props.price} Ξ
@@ -165,9 +187,9 @@ class MedicalNFTDetails extends Component {
             className="btn btn-outline-primary mt-3 w-50"
            
             style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-            // onClick={() =>
-            //   this.props.buyCrop(this.props.tokenId, this.props.price)
-            // }
+            onClick={() =>
+              this.props.buyCrop(this.props.tokenId, this.props.price)
+            }
           >
             DETAILS Ξ
           </button>
