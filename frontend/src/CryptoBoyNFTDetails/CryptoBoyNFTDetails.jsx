@@ -34,6 +34,8 @@ class CryptoBoyNFTDetails extends Component {
   // }
   render() {
     let url = "https://ipfs.io/ipfs/"+this.props.image;
+    let liink = this.props.link;
+  
     return (
       <div className="mt-4">
         <img
@@ -156,16 +158,19 @@ class CryptoBoyNFTDetails extends Component {
           ) : null}
         </div> */}
         <div>
+        <a href={liink}>
           <button
             className="btn btn-outline-primary mt-3 w-50"
-            value={this.props.price}
+            
+            // value={this.props.price}
             style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-            onClick={() =>
-              this.props.buyCrop(this.props.tokenId, this.props.price)
-            }
+            // onClick={() =>
+            //   this.props.buyCrop(this.props.tokenId, this.props.price)
+            // }
           >
-            Buy For {this.props.price} Ξ
+            More Details Ξ
           </button>
+          </a>
         </div>
       </div>
     );

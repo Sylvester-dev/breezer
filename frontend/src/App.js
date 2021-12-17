@@ -38,13 +38,13 @@ function getRandomValue() {
 
 
 
-/* const ipfsClient = require("ipfs-http-client");
+const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https",
 });
- */
+ 
 class App extends Component {
   constructor(props) {
     super(props);
@@ -78,6 +78,7 @@ class App extends Component {
       temperature:"",
       timestamp:"",
       distance:"",
+      liink:"",
     };
   }
 
@@ -201,7 +202,6 @@ class App extends Component {
     }
   };
 
-  
 
   getUsers = async () => {
     const usersCollectionRef = collection(db, "users");
@@ -255,36 +255,42 @@ class App extends Component {
       };
    
     
-
+      const cid = await ipfs.add(JSON.stringify(tokenObject));
+      let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
 
 
       console.log(ImageList[getRandomValue()]);
-      const pinataApiKey = "a770d310d147135d5ec4";
-      const pinataSecretApiKey =
-        "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
-      const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+      // const pinataApiKey = "a770d310d147135d5ec4";
+      // const pinataSecretApiKey =
+      //   "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
+      // const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
 
-      const json_upload = await axios
-        .post(jsonUrl, tokenObject, {
-          maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
-          headers: {
-            "Content-Type": "application/json",
-            pinata_api_key: pinataApiKey,
-            pinata_secret_api_key: pinataSecretApiKey,
-          },
-        }) 
+      // const json_upload = await axios
+      //   .post(jsonUrl, tokenObject, {
+      //     maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       pinata_api_key: pinataApiKey,
+      //       pinata_secret_api_key: pinataSecretApiKey,
+      //     },
+      //   }) 
         let createCrop = await this.state.cropNFTContract.methods
-          .createItem(json_upload)
+
+          .createItem(tokenURI)
           .send({ from: this.state.accountAddress });
 
         console.log(createCrop.events.Transfer.returnValues.tokenId);
         let tid = createCrop.events.Transfer.returnValues.tokenId;
         const usersCollectionRef = collection(db, "users");
  
-        console.log(json_upload)
-        let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+        console.log(tokenURI)
+        //let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+        let link = tokenURI,
+
+        
+        
        // console.log(link);
-        const getData = async () => {
+         getData = async () => {
          await Axios.get(link).then((response)=>{
             console.log(response);
              this.setState({assetName : response.data.AssetName});
@@ -297,8 +303,29 @@ class App extends Component {
              this.setState({pressure : response.data.pressure});
              this.setState({rating : response.data.rating});
              this.setState({temperature : response.data.temperature});
+             this.setState({liink : link});
             //  console.log(this.state.assetName);
           })
+
+          // let pressure_mean = 25
+          // let TEMPERATURE_mean = 22;
+          // let HUMIDITY_mean = 30;
+          // let light_mean = 40;
+        
+          // let star =
+          //   (this.state.pressure -
+          //   pressure_mean)+
+          //   (this.state.temperature - TEMPERATURE_mean) +
+          //   (this.state.humidity - HUMIDITY_mean) +
+          //   (this.state.light - light_mean);
+        
+          // if(star > 0)
+          // { star += 2.5}
+          // else if (star <= 0)
+          // {star -= 2.5}
+        
+          // console.log(star)
+
           await addDoc(usersCollectionRef, { 
             assetName: this.state.assetName ,
             humidity: this.state.humidity ,
@@ -310,10 +337,37 @@ class App extends Component {
             pressure: this.state.pressure ,
             rating: this.state.rating ,
             temperature: this.state.temperature ,
+            link: this.state.liink,
             token: tid ,
             });
         }
     getData();
+
+    // const getRating = () => {
+    //   console.log(this.state.pressure)
+    
+    //   let pressure_mean = 25
+    //   let TEMPERATURE_mean = 22;
+    //   let HUMIDITY_mean = 30;
+    //   let light_mean = 40;
+    
+    //   let rating =
+    //     (this.state.pressure -
+    //     pressure_mean)+
+    //     (this.state.temperature - TEMPERATURE_mean) +
+    //     (this.state.humidity - HUMIDITY_mean) +
+    //     (this.state.light - light_mean);
+    
+    //   if(rating > 0)
+    //   { rating += 2.5}
+    //   else if (rating <= 0)
+    //   {rating -= 2.5}
+    
+    //   console.log(rating)
+    
+    // };
+    // getRating();
+
         // const createUser = async () => {
         //   await addDoc(usersCollectionRef, { 
         //     assetName: this.state.assetName ,
@@ -436,7 +490,7 @@ class App extends Component {
           },
         }) 
         let createCrop = await this.state.cropNFTContract.methods
-          .createItem(json_upload)
+          .createItem(tokenURI)
           .send({ from: this.state.accountAddress });
 
         console.log(createCrop.events.Transfer.returnValues.tokenId);
@@ -461,6 +515,7 @@ class App extends Component {
              this.setState({temperature : response.data.temperature});
              this.setState({timestamp : response.data.timestamp});
              this.setState({distance : response.data.distance});
+             this.setState({liink : link});
             //  console.log(this.state.assetName);
           })
           await addDoc(MedusersCollectionRef, { 
@@ -476,6 +531,7 @@ class App extends Component {
             temperature: this.state.temperature ,
             timestamp: this.state.timestamp,
             distance: this.state.distance,
+            link: this.state.liink,
             token: tid ,
             });
         }
@@ -603,9 +659,8 @@ class App extends Component {
   };
 
  
-
   render() {
-    
+
     // const getData = () => {
     //   Axios.get(this.state.users).then((response)=>{
     //     console.log(response);
@@ -645,6 +700,7 @@ class App extends Component {
                     colorsUsed={this.state.colorsUsed}
                     setMintBtnTimer={this.setMintBtnTimer}
                     users={this.state.users}
+                 
                   />
                 )}
               />
@@ -672,6 +728,7 @@ class App extends Component {
                     toggleForSale={this.toggleForSale}
                     buyCrop={this.buyCrop}
                     users={this.state.users}
+                   
                   />
                 )}
               />

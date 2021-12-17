@@ -12,6 +12,7 @@ const AllCryptoBoys = ({
   toggleForSale,
   buyCrop,
   users,
+
 }) => {
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState("");
@@ -75,6 +76,7 @@ const AllCryptoBoys = ({
                 rating={user.rating}
                 temperature={user.temperature}
                 tokenId={user.token}
+                link={user.link}
                 buyCrop={buyCrop}
                 
               />
