@@ -229,194 +229,186 @@ class App extends Component {
 
 
   mintMyNFT = async (name, tokenPrice) => {
-    this.setState({ loading: true });
-    
-    
-      let ImageList = [
-        "QmanhUetUNsJbQxA6M4Co1eydY91Vu6PZvoJifrgNJ5FzH",
-        "QmS4hHWsVyQGaSb1VrfyFCE5qCXBBVFRYkuLhNzxEPrqEm",
-        "QmP6amwSued8zTnHiQL8eiTE2QaYv8E8ZT3yNqe8wZ6uiw",
-        "QmZkBnKdiGfun8bR3P7cobnQK7JZCtKk7HaYYhr3xp8KPu",
-        "QmUi3W1VTYJtMsjDy26BJ1HasBYknQB76jcDGCP9k5C9ca",
-        "QmUgzufRg2rHWa9CMqqVxXhKqqB6ZLBj16Hvjw1uUhWMcM",
-        "QmSoLhBB9mZUbNRuozNTrTq6uQGTfmmAAjWuWwfDF2ZKZA",
-        "Qmdqv21AhdTnnzpjbBoQbP1agLtbawky82uUr2qieeLn3K",
-      ];
+                this.setState({ loading: true });
 
-      
-      const tokenObject = {
-        AssetName: name,
-        Image: ImageList[getRandomVal()],
-        Lat:Data[getRandomValue()].latitude,
-        Long:Data[getRandomValue()].longitude,
-        temperature:Data[getRandomValue()].temperature,
-        pressure:Data[getRandomValue()].pressure,
-        humidity:Data[getRandomValue()].humidity,
-        light:Data[getRandomValue()].light,
-        rating:"4",
-        Price:tokenPrice
+                let ImageList = [
+                  "QmanhUetUNsJbQxA6M4Co1eydY91Vu6PZvoJifrgNJ5FzH",
+                  "QmS4hHWsVyQGaSb1VrfyFCE5qCXBBVFRYkuLhNzxEPrqEm",
+                  "QmP6amwSued8zTnHiQL8eiTE2QaYv8E8ZT3yNqe8wZ6uiw",
+                  "QmZkBnKdiGfun8bR3P7cobnQK7JZCtKk7HaYYhr3xp8KPu",
+                  "QmUi3W1VTYJtMsjDy26BJ1HasBYknQB76jcDGCP9k5C9ca",
+                  "QmUgzufRg2rHWa9CMqqVxXhKqqB6ZLBj16Hvjw1uUhWMcM",
+                  "QmSoLhBB9mZUbNRuozNTrTq6uQGTfmmAAjWuWwfDF2ZKZA",
+                  "Qmdqv21AhdTnnzpjbBoQbP1agLtbawky82uUr2qieeLn3K",
+                ];
 
-      };
+                const tokenObject = {
+                  AssetName: name,
+                  Image: ImageList[getRandomVal()],
+                  Lat: Data[getRandomValue()].latitude,
+                  Long: Data[getRandomValue()].longitude,
+                  temperature: Data[getRandomValue()].temperature,
+                  pressure: Data[getRandomValue()].pressure,
+                  humidity: Data[getRandomValue()].humidity,
+                  light: Data[getRandomValue()].light,
+                  rating: "4",
+                  Price: tokenPrice,
+                };
 
-      const cid = await ipfs.add(JSON.stringify(tokenObject));
-      let tokenURI = `https://ipfs.io/ipfs/${cid.path}`;
-      console.log(tokenURI);
-   
-  
+                const cid = await ipfs.add(JSON.stringify(tokenObject));
+                let tokenURI = `https://ipfs.io/ipfs/${cid.path}`;
+                console.log(tokenURI);
 
+                // console.log(ImageList[getRandomValue()]);
+                // const pinataApiKey = "a770d310d147135d5ec4";
+                // const pinataSecretApiKey =
+                //   "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
+                // const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
 
-      // console.log(ImageList[getRandomValue()]);
-      // const pinataApiKey = "a770d310d147135d5ec4";
-      // const pinataSecretApiKey =
-      //   "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
-      // const jsonUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+                // const json_upload = await axios
+                //   .post(jsonUrl, tokenObject, {
+                //     maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
+                //     headers: {
+                //       "Content-Type": "application/json",
+                //       pinata_api_key: pinataApiKey,
+                //       pinata_secret_api_key: pinataSecretApiKey,
+                //     },
+                //   })
+                let createCrop = await this.state.cropNFTContract.methods
+                  .createItem(tokenURI)
+                  .send({ from: this.state.accountAddress });
 
-      // const json_upload = await axios
-      //   .post(jsonUrl, tokenObject, {
-      //     maxBodyLength: "Infinity", //this is needed to prevent axios from erroring out with large files
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       pinata_api_key: pinataApiKey,
-      //       pinata_secret_api_key: pinataSecretApiKey,
-      //     },
-      //   }) 
-        let createCrop = await this.state.cropNFTContract.methods
-          .createItem(tokenURI)
-          .send({ from: this.state.accountAddress });
+                console.log(createCrop.events.Transfer.returnValues.tokenId);
+                let tid = createCrop.events.Transfer.returnValues.tokenId;
+                const usersCollectionRef = collection(db, "users");
+                console.log(tokenURI);
 
-        console.log(createCrop.events.Transfer.returnValues.tokenId);
-        let tid = createCrop.events.Transfer.returnValues.tokenId;
-        const usersCollectionRef = collection(db, "users");
-        console.log(tokenURI);
+                let pressure_mean = 25;
+                let TEMPERATURE_mean = 22;
+                let HUMIDITY_mean = 30;
+                let light_mean = 40;
 
-      let pressure_mean = 25
-      let TEMPERATURE_mean = 22;
-      let HUMIDITY_mean = 30;
-      let light_mean = 40;
-
-        
-        let link = tokenURI;
-       // console.log(link);
-       let star = (this.state.pressure - pressure_mean) + (this.state.temperature - TEMPERATURE_mean) +
-          (this.state.humidity - HUMIDITY_mean) +
-          (this.state.light - light_mean);
-      
-          if(star > 0)
+                let link = tokenURI;
+                // console.log(link);
+                let star =
+                  this.state.pressure -
+                  pressure_mean +
+                  (this.state.temperature - TEMPERATURE_mean) +
+                  (this.state.humidity - HUMIDITY_mean) +
+                  (this.state.light - light_mean);
+                star %= 5;
+                star = Math.abs(star);
+                /* if(star > 0)
           { star += 2.5}
           else if (star <= 0)
-          {star -= 2.5}
-        const getData = async () => {
-         await Axios.get(link).then((response)=>{
-            console.log(response);
-             this.setState({assetName : response.data.AssetName});
-             this.setState({image : response.data.Image});
-             this.setState({lat : response.data.Lat});
-             this.setState({lon : response.data.Long});
-             this.setState({humidity : response.data.humidity});
-             this.setState({price : response.data.Price});
-             this.setState({light : response.data.light});
-             this.setState({pressure : response.data.pressure});
-             this.setState({rating : star});
-             this.setState({temperature : response.data.temperature});
-             this.setState({ liink: tokenURI });
-            //  console.log(this.state.assetName);
-          })
+          {star -= 2.5} */
+                const getData = async () => {
+                  await Axios.get(link).then((response) => {
+                    console.log(response);
+                    this.setState({ assetName: response.data.AssetName });
+                    this.setState({ image: response.data.Image });
+                    this.setState({ lat: response.data.Lat });
+                    this.setState({ lon: response.data.Long });
+                    this.setState({ humidity: response.data.humidity });
+                    this.setState({ price: response.data.Price });
+                    this.setState({ light: response.data.light });
+                    this.setState({ pressure: response.data.pressure });
+                    this.setState({ rating: star });
+                    this.setState({ temperature: response.data.temperature });
+                    this.setState({ liink: tokenURI });
+                    //  console.log(this.state.assetName);
+                  });
 
-              
-          
+                  await addDoc(usersCollectionRef, {
+                    assetName: this.state.assetName,
+                    humidity: this.state.humidity,
+                    image: this.state.image,
+                    lat: this.state.lat,
+                    lon: this.state.lon,
+                    price: this.state.price,
+                    light: this.state.light,
+                    pressure: this.state.pressure,
+                    rating: star,
+                    temperature: this.state.temperature,
+                    link: this.state.liink,
+                    token: tid,
+                  });
+                };
+                getData();
 
-          await addDoc(usersCollectionRef, { 
-            assetName: this.state.assetName ,
-            humidity: this.state.humidity ,
-            image: this.state.image ,
-            lat: this.state.lat ,
-            lon: this.state.lon ,
-            price: this.state.price ,
-            light: this.state.light ,
-            pressure: this.state.pressure ,
-            rating: star ,
-            temperature: this.state.temperature ,
-            link: this.state.liink,
-            token: tid ,
-            });
-        }
-    getData();
+                // const getRating = () => {
+                //   console.log(this.state.pressure)
 
-    // const getRating = () => {
-    //   console.log(this.state.pressure)
-    
-    //   let pressure_mean = 25
-    //   let TEMPERATURE_mean = 22;
-    //   let HUMIDITY_mean = 30;
-    //   let light_mean = 40;
-    
-    //   let rating =
-    //     (this.state.pressure -
-    //     pressure_mean)+
-    //     (this.state.temperature - TEMPERATURE_mean) +
-    //     (this.state.humidity - HUMIDITY_mean) +
-    //     (this.state.light - light_mean);
-    
-    //   if(rating > 0)
-    //   { rating += 2.5}
-    //   else if (rating <= 0)
-    //   {rating -= 2.5}
-    
-    //   console.log(rating)
-    
-    // };
-    // getRating();
+                //   let pressure_mean = 25
+                //   let TEMPERATURE_mean = 22;
+                //   let HUMIDITY_mean = 30;
+                //   let light_mean = 40;
 
-        // const createUser = async () => {
-        //   await addDoc(usersCollectionRef, { 
-        //     assetName: this.state.assetName ,
-        //     humidity: this.state.humidity ,
-        //     image: this.state.image ,
-        //     lat: this.state.lat ,
-        //     lon: this.state.lon ,
-        //     price: this.state.price ,
-            
-        //     });
-        // };
-        
-        //createUser();
+                //   let rating =
+                //     (this.state.pressure -
+                //     pressure_mean)+
+                //     (this.state.temperature - TEMPERATURE_mean) +
+                //     (this.state.humidity - HUMIDITY_mean) +
+                //     (this.state.light - light_mean);
 
-      // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
-      
-      /* let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
+                //   if(rating > 0)
+                //   { rating += 2.5}
+                //   else if (rating <= 0)
+                //   {rating -= 2.5}
+
+                //   console.log(rating)
+
+                // };
+                // getRating();
+
+                // const createUser = async () => {
+                //   await addDoc(usersCollectionRef, {
+                //     assetName: this.state.assetName ,
+                //     humidity: this.state.humidity ,
+                //     image: this.state.image ,
+                //     lat: this.state.lat ,
+                //     lon: this.state.lon ,
+                //     price: this.state.price ,
+
+                //     });
+                // };
+
+                //createUser();
+
+                // let tokenxD = "https://ipfs.io/ipfs/QmSKL5LLcqiJjEUrmLxhc92zZJ8tYx2YYmLLfvtgsNPywh"
+
+                /* let createCrop = await this.state.cropNFTContract.methods.createItem(json_upload).send({from : this.state.accountAddress})
 
       console.log(createCrop.events.Transfer.returnValues.tokenId); */
-    
 
-      
-      const approvedAddress = await this.state.cropNFTContract.methods
-        .getApproved(createCrop.events.Transfer.returnValues.tokenId)
-        .call();
+                const approvedAddress = await this.state.cropNFTContract.methods
+                  .getApproved(createCrop.events.Transfer.returnValues.tokenId)
+                  .call();
 
-      if (approvedAddress != "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79") {
-        await this.state.cropNFTContract.methods
-          .approve(
-            "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79",
-            createCrop.events.Transfer.returnValues.tokenId
-          )
-          .send({ from: this.state.accountAddress });
-      }
-      let market = await this.state.marketContract.methods
-        .addItemToMarket(
-          createCrop.events.Transfer.returnValues.tokenId,
-          "0x8b8c57151707BE5bEDce3E24696695C2683a5597",
-          tokenPrice
-        )
-        .send({ from: this.state.accountAddress });
+                if (
+                  approvedAddress !=
+                  "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79"
+                ) {
+                  await this.state.cropNFTContract.methods
+                    .approve(
+                      "0x1E05b99ce758C4CC2389e55e4De11FDa33456e79",
+                      createCrop.events.Transfer.returnValues.tokenId
+                    )
+                    .send({ from: this.state.accountAddress });
+                }
+                let market = await this.state.marketContract.methods
+                  .addItemToMarket(
+                    createCrop.events.Transfer.returnValues.tokenId,
+                    "0x8b8c57151707BE5bEDce3E24696695C2683a5597",
+                    tokenPrice
+                  )
+                  .send({ from: this.state.accountAddress });
 
+                console.log(market);
 
-        console.log(market)
+                this.setState({ loading: false });
 
-        this.setState({ loading: false });
-      
-
-      
-     /*  const tokenObject = {
+                /*  const tokenObject = {
         tokenName: "Crypto Boy",
         tokenSymbol: "CB",
         tokenId: `${tokenId}`,
@@ -435,8 +427,7 @@ class App extends Component {
           this.setState({ loading: false });
           window.location.reload();
         }); */
-    
-  };
+              };;
   mintMedNFT = async (name, tokenPrice) => {
     this.setState({ loading: true });
     
@@ -509,11 +500,12 @@ class App extends Component {
           let star = (this.state.pressure - pressure_mean) + (this.state.temperature - TEMPERATURE_mean) +
           (this.state.humidity - HUMIDITY_mean) +
           (this.state.light - light_mean);
-      
-          if(star > 0)
+          star %= 5; 
+          star = Math.abs(star)
+          /* if(star > 0)
           { star += 2.5}
           else if (star <= 0)
-          {star -= 2.5}
+          {star -= 2.5} */
          await Axios.get(tokenURI_2).then((response) => {
            console.log(response);
            this.setState({ assetName: response.data.AssetName });
