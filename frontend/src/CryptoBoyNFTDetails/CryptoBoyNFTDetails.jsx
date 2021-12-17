@@ -57,11 +57,20 @@ class CryptoBoyNFTDetails extends Component {
           , {this.props.lon}
         </p>
         <p>
-          <span className="font-weight-bold">Price</span> : {this.props.price} Ξ
+          <span className="font-weight-bold">Storage Temperature</span> : {this.props.temperature}°C
+        </p>
+        <p>
+          <span className="font-weight-bold">Pressure</span> : {this.props.pressure}{" "}
+        </p>
+        <p>
+          <span className="font-weight-bold">Humidity in air</span> : {this.props.humidity}{" "}
+        </p>
+        <p>
+          <span className="font-weight-bold">Light Intensity</span> : {this.props.light}{" "}
         </p>
 
         <p>
-          <span className="font-weight-bold">Rating</span> : {this.props.rating}
+          <span className="font-weight-bold">Rating</span> : {this.props.rating}{" "}
         </p>
         {/* <p>
           <span className="font-weight-bold">Temperature</span> :{" "}
@@ -147,19 +156,19 @@ class CryptoBoyNFTDetails extends Component {
           ) : null}
         </div> */}
         <div>
-        <a href={liink}>
+        
           <button
             className="btn btn-outline-primary mt-3 w-50"
             
             // value={this.props.price}
             style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-            // onClick={() =>
-            //   this.props.buyCrop(this.props.tokenId, this.props.price)
-            // }
+            onClick={() =>
+              this.props.buyCrop(this.props.tokenId, this.props.price)
+            }
           >
-            More Details Ξ
+            Buy Now For Ξ {this.props.price} 
           </button>
-          </a>
+        
         </div>
       </div>
     );

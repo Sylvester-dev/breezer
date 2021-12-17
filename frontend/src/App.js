@@ -32,11 +32,11 @@ import MedicalForm from "./MedicalForm/MedicalForm";
 
 
 function getRandomValue() {
-  const rand = Math.floor(Math.random() * 499);
+  const rand = Math.floor(Math.random() * 490);
   return rand;
 }
 function getRandomVal() {
-  const rand = Math.floor((Math.random() * 10) % 7);
+  const rand = Math.floor(Math.random() * 8);
   return rand;
 }
 

@@ -82,22 +82,23 @@ class MedicalNFTDetails extends Component {
           {this.props.distance} Miles
         </p>
         <p>
-          <span className="font-weight-bold">Price</span> : {this.props.price} Ξ
-        </p>
-        {/* <p>
-          <span className="font-weight-bold">Humidity</span> :{" "}
+          <span className="font-weight-bold">Storage Humidity</span> :{" "}
           {this.props.humidity}
-        </p> */}
-        {/* <p>
-          <span className="font-weight-bold">Light</span> : {this.props.light}
-        </p> */}
-        {/* <p>
+        </p> 
+        <p>
+          <span className="font-weight-bold">Light Intensity</span> : {this.props.light}
+        </p>
+        <p>
           <span className="font-weight-bold">Pressure</span> :{" "}
           {this.props.pressure}
-        </p> */}
+        </p>
         <p>
           <span className="font-weight-bold">Storage Temperature</span> :{" "}
-          {this.props.temperature}
+          {this.props.temperature}°C
+        </p>
+        <p>
+          <span className="font-weight-bold">Manufacture Timestamp</span> :{" "}
+          {this.props.timestamp}
         </p>
         <p>
           <span className="font-weight-bold">Rating</span> : {this.props.rating}
@@ -183,7 +184,7 @@ class MedicalNFTDetails extends Component {
           ) : null}
         </div> */}
         <div>
-        <a  href={liink}>
+       
           <button
             className="btn btn-outline-primary mt-3 w-50"
            
@@ -192,9 +193,9 @@ class MedicalNFTDetails extends Component {
               this.props.buyCrop(this.props.tokenId, this.props.price)
             }
           >
-            DETAILS Ξ
+            Buy Now For Ξ {this.props.price} 
           </button>
-          </a>
+        
         </div>
       </div>
     );
