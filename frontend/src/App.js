@@ -257,8 +257,7 @@ class App extends Component {
       const cid = await ipfs.add(JSON.stringify(tokenObject));
       let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
    
-    
-
+  
 
 
       console.log(ImageList[getRandomValue()]);
@@ -430,7 +429,7 @@ class App extends Component {
       ];
 
       
-      const tokenObject = {
+      const tokenObject2 = {
         AssetName: name,
         Image: ImageList[getRandomValue()],
         Lat:Data[getRandomValue()].latitude,
@@ -446,11 +445,12 @@ class App extends Component {
 
       };
    
-    
+    const cid = await ipfs.add(JSON.stringify(tokenObject2));
+    let tokenURI_2 = `https://ipfs.infura.io/ipfs/${cid.path}`;
 
 
 
-      console.log(ImageList[getRandomValue()]);
+      /* console.log(ImageList[getRandomValue()]);
       const pinataApiKey = "a770d310d147135d5ec4";
       const pinataSecretApiKey =
         "076b05a1c38c2910d32a8079e1007d52b8c02264990e0af61fa0e544cd760c78";
@@ -464,36 +464,36 @@ class App extends Component {
             pinata_api_key: pinataApiKey,
             pinata_secret_api_key: pinataSecretApiKey,
           },
-        }) 
+        })  */
         let createCrop = await this.state.cropNFTContract.methods
-          .createItem(tokenURI)
+          .createItem(tokenURI_2)
           .send({ from: this.state.accountAddress });
 
         console.log(createCrop.events.Transfer.returnValues.tokenId);
         let tid = createCrop.events.Transfer.returnValues.tokenId;
  
         const MedusersCollectionRef = collection(db, "medicalUsers");
-        console.log(json_upload)
-        let link = 'https://ipfs.io/ipfs/'+json_upload.data.IpfsHash;
+        console.log(tokenURI_2);
+        
        // console.log(link);
         const getData = async () => {
-         await Axios.get(link).then((response)=>{
-            console.log(response);
-             this.setState({assetName : response.data.AssetName});
-             this.setState({image : response.data.Image});
-             this.setState({lat : response.data.Lat});
-             this.setState({lon : response.data.Long});
-             this.setState({humidity : response.data.humidity});
-             this.setState({price : response.data.Price});
-             this.setState({light : response.data.light});
-             this.setState({pressure : response.data.pressure});
-             this.setState({rating : response.data.rating});
-             this.setState({temperature : response.data.temperature});
-             this.setState({timestamp : response.data.timestamp});
-             this.setState({distance : response.data.distance});
-             this.setState({liink : link});
-            //  console.log(this.state.assetName);
-          })
+         await Axios.get(tokenURI_2).then((response) => {
+           console.log(response);
+           this.setState({ assetName: response.data.AssetName });
+           this.setState({ image: response.data.Image });
+           this.setState({ lat: response.data.Lat });
+           this.setState({ lon: response.data.Long });
+           this.setState({ humidity: response.data.humidity });
+           this.setState({ price: response.data.Price });
+           this.setState({ light: response.data.light });
+           this.setState({ pressure: response.data.pressure });
+           this.setState({ rating: response.data.rating });
+           this.setState({ temperature: response.data.temperature });
+           this.setState({ timestamp: response.data.timestamp });
+           this.setState({ distance: response.data.distance });
+           this.setState({ liink: tokenURI_2 });
+           //  console.log(this.state.assetName);
+         });
           await addDoc(MedusersCollectionRef, { 
             assetName: this.state.assetName ,
             humidity: this.state.humidity ,
