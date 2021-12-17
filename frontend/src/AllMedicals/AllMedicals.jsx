@@ -77,6 +77,7 @@ const AllMedicals = ({
                 tokenId={user.token}
                 distance={user.distance}
                 timestamp={user.timestamp}
+                link={user.link}
                 buyCrop={buyCrop}
                 
               />
