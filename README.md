@@ -25,6 +25,12 @@ We use the IOT data by Tru-stream as an example parameter and use it to make an 
 - we can mint our crop/medicine nft based on the data collected and put that on market for sale
 - The nft represents the crop/medicine package and the rating assists customers in selecting the best product
 
-It is an NFT market where you can create IOTEX-based ERC721-implemented breeze NFTs and manage them. IoT and blockchain give us the capability to use IOT data to rate the freshness parameters of crops and medicines using Tru-Stream and IOTEX.
+It is an NFT market where you can create and buy IOTEX-based ERC721-implemented breeze NFTs and manage them. IoT and blockchain give us the capability to use IOT data to rate the freshness parameters of crops and medicines using Tru-Stream and IOTEX.
 
+## Steps to start the project ->
+
+- git clone `https://github.com/Sylvester-dev/breezer.git`
+- `cd /frontend`
+- `yarn install`
+- `yarn start`
 
